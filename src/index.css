@@ -232,6 +232,32 @@
     }
   }
 
+  @media (max-width: 767px) {
+    .animate-fade-in-up,
+    .animate-scale-in,
+    .animate-slide-in-right {
+      animation: fadeInMobile 0.45s ease-out forwards;
+    }
+  }
+
+  @keyframes fadeInMobile {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @media (hover: none) and (pointer: coarse) {
+    .btn-corporate,
+    .btn-secondary-corporate,
+    .btn-outline-corporate,
+    .card-corporate {
+      transform: none;
+    }
+  }
+
   /* Corporate Section Backgrounds */
   .bg-corporate-gradient {
     background: var(--gradient-hero);

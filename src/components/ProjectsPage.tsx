@@ -1,145 +1,136 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { X } from "lucide-react";
 
-// ✅ Import Project Images from assets
 import tadaImg from "../assets/projects/projects/tada.jpg";
 import kustagiImg from "../assets/projects/projects/kustagi.jpg";
 import naydupetImg from "../assets/projects/projects/naydupet.jpg";
 
+type Project = {
+  title: string;
+  image: string;
+  description: string;
+};
+
+const projects: Project[] = [
+  {
+    title: "132/33kV Substation - TADA",
+    image: tadaImg,
+    description: "132/33kV substation for Daikin India Ltd, Tada site, Andhra Pradesh.",
+  },
+  {
+    title: "220/132kV Substation - KUSTAGI",
+    image: kustagiImg,
+    description:
+      "220/33kV pooling substation for Vena Energy India Pvt Ltd, Kustagi, Karnataka.",
+  },
+  {
+    title: "400kV Substation - NAYDUPET",
+    image: naydupetImg,
+    description:
+      "110/33kV test lab bay work for Meiden T and D India Ltd, Naydupet, Andhra Pradesh.",
+  },
+];
+
+const fadeIn = {
+  initial: { opacity: 0 },
+  whileInView: { opacity: 1 },
+  viewport: { once: true },
+};
+
 const ProjectPage = () => {
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [selectedProject, setSelectedProject] = useState<any>(null);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
-  const projects = [
-    {
-      title: "132/33kV Substation - TADA",
-      image: tadaImg,
-      description:
-        "132/33KV, SUBSTATION, FOR CUSTOMER Daikin India Ltd, TADA SITE, AP.",
-    },
-    {
-      title: "220/132kV Substation - KUSTAGI",
-      image: kustagiImg,
-      description:
-        "220/33kV, pooling substation for Vena Energy India Pvt Ltd, Kustagi, Karnataka, Koppal District.",
-    },
-    {
-      title: "400kV Substation - NAYDUPET",
-      image: naydupetImg,
-      description:
-        "110/33kV test lab bay work done for Meiden T&D India Ltd, Naydupet, Nellore District, AP.",
-    },
-  ];
-
-  // Close modal on Esc key
   useEffect(() => {
     const handleEsc = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        setSelectedImage(null);
         setSelectedProject(null);
       }
     };
+
     window.addEventListener("keydown", handleEsc);
     return () => window.removeEventListener("keydown", handleEsc);
   }, []);
 
-  const openModal = (project: any) => {
-    setSelectedImage(project.image);
-    setSelectedProject(project);
-  };
-
   return (
-    <section id="projects" className="py-24 bg-white text-gray-800">
-      <div className="container mx-auto px-4 text-center">
-        {/* Title */}
-        <motion.h2
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
-          className="text-4xl md:text-5xl font-bold text-orange-600 mb-4"
+    <section id="projects" className="bg-white py-20 text-gray-800 sm:py-24 lg:py-32">
+      <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-10">
+        <motion.div
+          {...fadeIn}
+          transition={{ duration: 0.5 }}
+          className="flex flex-col items-center text-center lg:items-start lg:text-left"
         >
-           Projects
-        </motion.h2>
-        <p className="text-gray-600 max-w-xl mx-auto mb-12">
-          Delivering excellence through innovative engineering solutions.
-        </p>
+          <h2 className="text-3xl font-bold text-orange-600 sm:text-4xl md:text-5xl">Projects</h2>
+          <p className="mt-4 max-w-3xl text-base leading-relaxed text-gray-600 sm:text-lg">
+            Delivering excellence through innovative and reliable engineering solutions.
+          </p>
+        </motion.div>
 
-        {/* Projects Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <div className="mt-14 grid grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-10 lg:grid-cols-3 lg:gap-12">
           {projects.map((project, index) => (
-            <motion.div
-              key={index}
-              whileInView={{ opacity: 1, y: 0 }}
-              initial={{ opacity: 0, y: 20 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 + index * 0.2 }}
-              className="bg-gray-50 rounded-xl shadow-md hover:shadow-xl transition overflow-hidden cursor-pointer"
-              onClick={() => openModal(project)}
+            <motion.button
+              key={project.title}
+              type="button"
+              {...fadeIn}
+              transition={{ duration: 0.5, delay: index * 0.05 }}
+              className="min-h-[44px] overflow-hidden rounded-lg border border-gray-200 bg-gray-50 text-left shadow-sm transition-colors hover:border-orange-200"
+              onClick={() => setSelectedProject(project)}
             >
               <img
                 src={project.image}
                 alt={project.title}
-                className="w-full h-48 sm:h-56 md:h-48 lg:h-56 object-cover transition-transform duration-300 hover:scale-105"
+                className="h-[260px] w-full object-cover sm:h-[320px] lg:h-[320px]"
+                loading="lazy"
               />
-              <div className="p-5">
-                <h3 className="text-lg sm:text-xl font-semibold text-gray-800">
-                  {project.title}
-                </h3>
-                <p className="text-gray-600 mt-2 text-sm sm:text-base">
+              <div className="p-6 sm:p-8">
+                <h3 className="text-xl font-semibold text-gray-800">{project.title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-gray-600 sm:text-base">
                   {project.description}
                 </p>
               </div>
-            </motion.div>
+            </motion.button>
           ))}
         </div>
       </div>
 
-      {/* Modal */}
       <AnimatePresence>
-        {selectedImage && selectedProject && (
+        {selectedProject && (
           <motion.div
-            className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={(e) => {
-              if (e.target === e.currentTarget) {
-                setSelectedImage(null);
+            onClick={(event) => {
+              if (event.target === event.currentTarget) {
                 setSelectedProject(null);
               }
             }}
           >
             <motion.div
-              initial={{ scale: 0.8 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0.8 }}
-              className="relative max-w-3xl w-full rounded-lg shadow-lg bg-white overflow-hidden"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="relative w-full max-w-4xl overflow-hidden rounded-lg bg-white shadow-lg"
             >
-              {/* Close Button */}
               <button
-                onClick={() => {
-                  setSelectedImage(null);
-                  setSelectedProject(null);
-                }}
-                className="absolute top-2 right-2 text-gray-800 bg-white rounded-full p-2 shadow hover:bg-gray-100"
+                onClick={() => setSelectedProject(null)}
+                className="absolute right-3 top-3 inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full bg-white/95 text-gray-800 shadow-sm transition-colors hover:bg-gray-100"
+                aria-label="Close project modal"
               >
-                ✕
+                <X className="h-5 w-5" />
               </button>
 
-              {/* Image */}
               <img
-                src={selectedImage}
+                src={selectedProject.image}
                 alt={selectedProject.title}
-                className="w-full h-64 sm:h-96 object-cover"
+                className="h-[260px] w-full object-cover sm:h-[320px] lg:h-[420px]"
               />
 
-              {/* Caption */}
-              <div className="p-4 text-left">
-                <h3 className="text-xl font-bold text-gray-800">
-                  {selectedProject.title}
-                </h3>
-                <p className="text-gray-600 mt-2">{selectedProject.description}</p>
+              <div className="p-6 text-left sm:p-8">
+                <h3 className="text-2xl font-bold text-gray-800 sm:text-3xl">{selectedProject.title}</h3>
+                <p className="mt-3 text-base leading-relaxed text-gray-600 sm:text-lg">
+                  {selectedProject.description}
+                </p>
               </div>
             </motion.div>
           </motion.div>

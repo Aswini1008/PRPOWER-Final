@@ -6,7 +6,7 @@ import {
   TestTube,
   Wrench,
   ArrowRight,
-  CheckCircle
+  CheckCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -16,117 +16,83 @@ const services = [
     title: "Engineering Services",
     description:
       "Complete electrical engineering including SLDs, layouts, cable designs, and protection coordination.",
-    features: [
-      "System Design",
-      "Foundation Engineering",
-      "Relay Settings",
-      "Cable Scheduling"
-    ]
+    features: ["System Design", "Foundation Engineering", "Relay Settings", "Cable Scheduling"],
   },
   {
     icon: Settings,
     title: "Installation Services",
     description:
       "Expert installation of AIS/GIS substations and renewable energy infrastructure projects.",
-    features: [
-      "AIS/GIS Substations",
-      "Solar EPC",
-      "Wind EPC",
-      "Up to 400kV Capability"
-    ]
+    features: ["AIS/GIS Substations", "Solar EPC", "Wind EPC", "Up to 400kV Capability"],
   },
   {
     icon: TestTube,
-    title: "Testing & Commissioning",
-    description:
-      "Comprehensive testing and commissioning of high-voltage electrical systems.",
-    features: [
-      "CT/PT Testing",
-      "Isolator Testing",
-      "CVT Testing",
-      "Relay Coordination"
-    ]
+    title: "Testing and Commissioning",
+    description: "Comprehensive testing and commissioning of high-voltage electrical systems.",
+    features: ["CT/PT Testing", "Isolator Testing", "CVT Testing", "Relay Coordination"],
   },
   {
     icon: Package,
     title: "Supply Services",
     description:
       "Procurement and delivery of transformers, control panels, and protection equipment.",
-    features: [
-      "Transformers",
-      "Control Panels",
-      "Cable Trays",
-      "Protection Equipment"
-    ]
+    features: ["Transformers", "Control Panels", "Cable Trays", "Protection Equipment"],
   },
   {
     icon: Wrench,
-    title: "O&M Services",
+    title: "O and M Services",
     description:
-      "Operations & Maintenance support with preventive and predictive strategies.",
-    features: [
-      "24/7 Operations",
-      "Preventive Maintenance",
-      "Predictive Analysis",
-      "Emergency Support"
-    ]
-  }
+      "Operations and Maintenance support with preventive and predictive strategies.",
+    features: ["24/7 Operations", "Preventive Maintenance", "Predictive Analysis", "Emergency Support"],
+  },
 ];
+
+const fadeIn = {
+  initial: { opacity: 0 },
+  whileInView: { opacity: 1 },
+  viewport: { once: true },
+};
 
 const ServicesSection = () => {
   return (
-    <section id="services" className="py-32 bg-[#f8fafc] text-[#1f2f45]">
-      <div className="mx-auto max-w-7xl px-6 lg:px-10">
-
-        {/* Header */}
+    <section id="services-section" className="bg-[#f8fafc] py-20 text-[#1f2f45] sm:py-24 lg:py-32">
+      <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-10">
         <motion.div
-          className="text-center mb-20"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
+          {...fadeIn}
+          transition={{ duration: 0.5 }}
+          className="flex flex-col items-center text-center lg:items-start lg:text-left"
         >
-          <p className="text-sm tracking-widest uppercase text-gray-500 mb-6">
-            Our Services
-          </p>
-          <h2 className="text-4xl sm:text-5xl font-semibold mb-6">
+          <p className="text-sm uppercase tracking-[0.2em] text-gray-500">Our Services</p>
+          <h2 className="mt-4 text-3xl font-semibold sm:text-4xl md:text-5xl">
             Comprehensive Infrastructure Solutions
           </h2>
-          <p className="max-w-2xl mx-auto text-lg text-gray-600">
-            End-to-end electrical infrastructure solutions delivered with technical precision and execution excellence.
+          <p className="mt-4 max-w-3xl text-base leading-relaxed text-gray-600 sm:text-lg">
+            End-to-end electrical infrastructure solutions delivered with technical precision and
+            execution excellence.
           </p>
         </motion.div>
 
-        {/* Grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-10">
+        <div className="mt-14 grid grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-10 lg:grid-cols-3 lg:gap-12">
           {services.map((service, index) => {
             const Icon = service.icon;
             return (
               <motion.div
-                key={index}
-                className="bg-white border border-[#e5e9ef] p-8 rounded-lg shadow-sm hover:shadow-md transition duration-300"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
+                key={service.title}
+                {...fadeIn}
+                transition={{ duration: 0.5, delay: index * 0.05 }}
+                className="rounded-lg border border-[#e5e9ef] bg-white p-6 shadow-sm sm:p-8"
               >
-                <Icon className="w-8 h-8 text-[#F26B1D] mb-6" />
+                <Icon className="h-8 w-8 text-[#F26B1D]" />
 
-                <h3 className="text-xl font-semibold mb-4">
-                  {service.title}
-                </h3>
+                <h3 className="mt-6 text-xl font-semibold">{service.title}</h3>
 
-                <p className="text-gray-600 mb-6 leading-relaxed">
-                  {service.description}
-                </p>
+                <p className="mt-4 text-base leading-relaxed text-gray-600">{service.description}</p>
 
-                <ul className="space-y-3">
-                  {service.features.map((feature, i) => (
-                    <li key={i} className="flex items-start gap-3">
-                      <CheckCircle className="w-4 h-4 text-[#F26B1D] mt-1" />
-                      <span className="text-sm text-gray-700">
-                        {feature}
-                      </span>
+                <ul className="mt-6 space-y-3">
+                  {service.features.map((feature) => (
+                    <li key={feature} className="flex items-start gap-3">
+                      <CheckCircle className="mt-0.5 h-4 w-4 text-[#F26B1D]" />
+                      <span className="text-sm leading-relaxed text-gray-700 sm:text-base">{feature}</span>
                     </li>
                   ))}
                 </ul>
@@ -135,14 +101,13 @@ const ServicesSection = () => {
           })}
         </div>
 
-        {/* CTA */}
-        <div className="text-center mt-20">
+        <div className="mt-14 flex flex-col items-center text-center lg:items-start lg:text-left">
           <Button
             size="lg"
-            className="bg-[#F26B1D] hover:bg-[#d85c17] text-white rounded-md px-8 py-3"
+            className="inline-flex w-full justify-center rounded-md bg-[#F26B1D] px-8 py-3 text-white transition-colors hover:bg-[#d85c17] sm:w-auto"
           >
             View All Services
-            <ArrowRight className="w-5 h-5 ml-2" />
+            <ArrowRight className="ml-2 h-5 w-5" />
           </Button>
         </div>
       </div>

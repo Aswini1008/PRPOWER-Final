@@ -1,8 +1,6 @@
-import React from "react";
 import CountUp from "react-countup";
 import { motion } from "framer-motion";
 
-// ✅ Client Logos
 import DaikinLogo from "../assets/pr-logo/pr-logo/DAIKIN.jpeg";
 import LTLogo from "../assets/pr-logo/pr-logo/L&T.jpeg";
 import MahindraLogo from "../assets/pr-logo/pr-logo/MAHINDRA.jpeg";
@@ -11,90 +9,89 @@ import SterlingWilsonLogo from "../assets/pr-logo/pr-logo/sterling & wilson.png"
 import PGCILLogo from "../assets/pr-logo/pr-logo/PGCIL.jpeg";
 import TNEBLogo from "../assets/pr-logo/pr-logo/TNEB.jpeg";
 import TVSLogo from "../assets/pr-logo/pr-logo/TVS.png";
-import indo from "../assets/pr-logo/pr-logo/indo.jpg";
-import median from "../assets/pr-logo/pr-logo/meiden.jpg";
+import IndoLogo from "../assets/pr-logo/pr-logo/indo.jpg";
+import MeidenLogo from "../assets/pr-logo/pr-logo/meiden.jpg";
+
+const logos = [
+  { src: DaikinLogo, alt: "Daikin" },
+  { src: LTLogo, alt: "L&T" },
+  { src: MahindraLogo, alt: "Mahindra" },
+  { src: VenaEnergyLogo, alt: "Vena Energy" },
+  { src: SterlingWilsonLogo, alt: "Sterling & Wilson" },
+  { src: PGCILLogo, alt: "PGCIL" },
+  { src: TNEBLogo, alt: "TNEB" },
+  { src: TVSLogo, alt: "TVS" },
+  { src: IndoLogo, alt: "Indo" },
+  { src: MeidenLogo, alt: "Meiden" },
+];
+
+const fadeIn = {
+  initial: { opacity: 0 },
+  whileInView: { opacity: 1 },
+  viewport: { once: true },
+};
 
 const ClientsSection = () => {
-  const logos = [
-    { src: DaikinLogo, alt: "Daikin" },
-    { src: LTLogo, alt: "L&T" },
-    { src: MahindraLogo, alt: "Mahindra" },
-    { src: VenaEnergyLogo, alt: "Vena Energy" },
-    { src: SterlingWilsonLogo, alt: "Sterling & Wilson" },
-    { src: PGCILLogo, alt: "PGCIL" },
-    { src: TNEBLogo, alt: "TNEB" },
-    { src: TVSLogo, alt: "TVS" },
-    { src: indo,alt:"indo"},
-    { src : median, alt:"median"},
-  ];
-
   return (
-    <section id="clients-section" className="py-24 bg-gray-50 text-gray-800">
-      <div className="container mx-auto px-4 text-center">
-        <motion.h2
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
-          className="text-4xl md:text-5xl font-bold text-orange-600 mb-4"
+    <section id="clients-section" className="bg-gray-50 py-20 text-gray-800 sm:py-24 lg:py-32">
+      <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-10">
+        <motion.div
+          {...fadeIn}
+          transition={{ duration: 0.5 }}
+          className="flex flex-col items-center text-center lg:items-start lg:text-left"
         >
-          Our Clients
-        </motion.h2>
-        <p className="text-gray-600 max-w-xl mx-auto mb-12">
-          Trusted by industry leaders across infrastructure, energy, and engineering.
-        </p>
+          <h2 className="text-3xl font-bold text-orange-600 sm:text-4xl md:text-5xl">Our Clients</h2>
+          <p className="mt-4 max-w-3xl text-base leading-relaxed text-gray-600 sm:text-lg">
+            Trusted by leaders across infrastructure, energy, and engineering sectors.
+          </p>
+        </motion.div>
 
-        {/* Logos Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 items-center justify-items-center">
+        <div className="mt-12 grid grid-cols-2 items-center justify-items-center gap-8 sm:grid-cols-3 sm:gap-10 md:grid-cols-4 lg:grid-cols-5 lg:gap-12">
           {logos.map((logo, index) => (
             <motion.img
-              key={index}
+              key={logo.alt}
+              {...fadeIn}
+              transition={{ duration: 0.45, delay: index * 0.03 }}
               src={logo.src}
               alt={logo.alt}
-              className="h-16 w-auto object-contain"
-              whileHover={{ scale: 1.05 }}
-              transition={{ duration: 0.3 }}
+              className="h-10 w-auto max-w-full object-contain sm:h-12 md:h-14"
+              loading="lazy"
             />
           ))}
         </div>
 
-        {/* Stats Box Style */}
-        <div className="mt-20 grid grid-cols-1 sm:grid-cols-3 gap-6 text-center max-w-4xl mx-auto">
+        <div className="mt-14 grid grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-10 lg:grid-cols-3 lg:gap-12">
           <motion.div
-            whileInView={{ opacity: 1, y: 0 }}
-            initial={{ opacity: 0, y: 20 }}
-            viewport={{ once: true }}
+            {...fadeIn}
             transition={{ duration: 0.5 }}
-            className="bg-white border border-orange-200 rounded-xl shadow-md p-6 hover:shadow-lg transition"
+            className="rounded-lg border border-orange-200 bg-white p-6 text-center shadow-sm sm:p-8 lg:text-left"
           >
-            <p className="text-4xl font-bold text-orange-600">
+            <p className="text-3xl font-bold text-orange-600 sm:text-4xl md:text-5xl">
               <CountUp end={100} duration={2} />+
             </p>
-            <p className="text-gray-700 mt-2 text-lg font-medium">Happy Clients</p>
+            <p className="mt-3 text-base font-medium text-gray-700 sm:text-lg">Happy Clients</p>
           </motion.div>
+
           <motion.div
-            whileInView={{ opacity: 1, y: 0 }}
-            initial={{ opacity: 0, y: 20 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="bg-white border border-orange-200 rounded-xl shadow-md p-6 hover:shadow-lg transition"
+            {...fadeIn}
+            transition={{ duration: 0.5, delay: 0.05 }}
+            className="rounded-lg border border-orange-200 bg-white p-6 text-center shadow-sm sm:p-8 lg:text-left"
           >
-            <p className="text-4xl font-bold text-orange-600">
+            <p className="text-3xl font-bold text-orange-600 sm:text-4xl md:text-5xl">
               <CountUp end={250} duration={2} />+
             </p>
-            <p className="text-gray-700 mt-2 text-lg font-medium">Projects Completed</p>
+            <p className="mt-3 text-base font-medium text-gray-700 sm:text-lg">Projects Completed</p>
           </motion.div>
+
           <motion.div
-            whileInView={{ opacity: 1, y: 0 }}
-            initial={{ opacity: 0, y: 20 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
-            className="bg-white border border-orange-200 rounded-xl shadow-md p-6 hover:shadow-lg transition"
+            {...fadeIn}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="rounded-lg border border-orange-200 bg-white p-6 text-center shadow-sm sm:p-8 lg:text-left"
           >
-            <p className="text-4xl font-bold text-orange-600">
+            <p className="text-3xl font-bold text-orange-600 sm:text-4xl md:text-5xl">
               <CountUp end={20} duration={2} />+
             </p>
-            <p className="text-gray-700 mt-2 text-lg font-medium">Years of Excellence</p>
+            <p className="mt-3 text-base font-medium text-gray-700 sm:text-lg">Years of Excellence</p>
           </motion.div>
         </div>
       </div>

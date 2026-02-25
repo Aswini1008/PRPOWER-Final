@@ -1,5 +1,6 @@
 import { useEffect, useState, type MouseEvent } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import logo from "@/assets/logo.png";
 
@@ -24,17 +25,16 @@ const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  /* Scroll shadow effect */
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
     };
+
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  /* Prevent background scroll on mobile */
   useEffect(() => {
     document.body.style.overflow = isMobileOpen ? "hidden" : "";
     return () => {
@@ -42,7 +42,17 @@ const Navbar = () => {
     };
   }, [isMobileOpen]);
 
-  /* Active section on scroll */
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsMobileOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleEscape);
+    return () => window.removeEventListener("keydown", handleEscape);
+  }, []);
+
   useEffect(() => {
     if (location.pathname !== "/") {
       return;
@@ -74,7 +84,6 @@ const Navbar = () => {
     };
   }, [location.pathname]);
 
-  /* Keep active section in sync with URL hash */
   useEffect(() => {
     if (location.pathname !== "/" || !location.hash) {
       return;
@@ -86,7 +95,6 @@ const Navbar = () => {
     }
   }, [location.pathname, location.hash]);
 
-  /* Scroll to section helper */
   const scrollToSection = (id: SectionId) => {
     const element = document.getElementById(id);
     if (!element) {
@@ -97,7 +105,6 @@ const Navbar = () => {
     window.scrollTo({ top, behavior: "smooth" });
   };
 
-  /* Navigation handler */
   const handleNavigation = (href: string) => {
     setIsMobileOpen(false);
 
@@ -120,13 +127,11 @@ const Navbar = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  /* Logo click -> always back to hero/home */
   const handleLogoClick = (event: MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
     handleNavigation("/#home");
   };
 
-  /* Active Link Detection */
   const isActive = (href: string) => {
     if (href === "/projects") {
       return location.pathname === "/projects";
@@ -144,33 +149,31 @@ const Navbar = () => {
     <>
       <header
         className={cn(
-          "fixed inset-x-0 top-0 z-50 bg-white backdrop-blur-md transition-all duration-300",
+          "fixed inset-x-0 top-0 z-50 border-b border-transparent bg-white/95 backdrop-blur-md transition-all duration-300",
           isScrolled
-            ? "h-[70px] shadow-[0_8px_24px_rgba(15,23,42,0.08)] border-b border-[#edf1f5]"
-            : "h-[86px]"
+            ? "h-[72px] border-[#e5ebf2] shadow-[0_8px_24px_rgba(15,23,42,0.08)]"
+            : "h-[84px]"
         )}
       >
-        <div className="mx-auto flex h-full max-w-[1280px] items-center justify-between px-6 lg:px-10">
-          {/* Logo */}
-          <Link to="/" onClick={handleLogoClick} aria-label="PR Power Home">
+        <div className="mx-auto flex h-full w-full max-w-7xl items-center justify-between px-6 sm:px-8 lg:px-10">
+          <Link to="/" onClick={handleLogoClick} aria-label="PR Power Home" className="shrink-0">
             <img
               src={logo}
               alt="PR Power"
               className={cn(
-                "transition-all duration-300",
-                isScrolled ? "h-8" : "h-10"
+                "w-auto transition-all duration-300",
+                isScrolled ? "h-8 sm:h-9" : "h-9 sm:h-10"
               )}
             />
           </Link>
 
-          {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-14">
+          <nav className="hidden items-center gap-9 lg:flex xl:gap-11">
             {NAV_ITEMS.map((item) => (
               <button
                 key={item.label}
                 onClick={() => handleNavigation(item.href)}
                 className={cn(
-                  "group relative text-[15px] font-medium transition-colors duration-300",
+                  "group relative min-h-[44px] text-[15px] font-medium transition-colors duration-300",
                   isActive(item.href)
                     ? "text-[#F26B1D]"
                     : "text-[#233248] hover:text-[#F26B1D]"
@@ -189,46 +192,67 @@ const Navbar = () => {
             ))}
           </nav>
 
-          {/* Get Quote Button */}
           <button
             onClick={() => handleNavigation("/#contact")}
-            className="hidden lg:inline-flex rounded-md bg-[#F26B1D] px-6 py-2.5 text-[15px] font-medium text-white shadow-[0_6px_16px_rgba(242,107,29,0.25)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#d85c17]"
+            className="hidden min-h-[44px] rounded-md bg-[#F26B1D] px-6 py-2.5 text-[15px] font-medium text-white shadow-[0_6px_16px_rgba(242,107,29,0.25)] transition-colors duration-300 hover:bg-[#d85c17] lg:inline-flex"
           >
             Get a Quote
           </button>
 
-          {/* Mobile Toggle */}
           <button
-            onClick={() => setIsMobileOpen(!isMobileOpen)}
-            className="lg:hidden h-11 w-11 flex items-center justify-center rounded-md border border-[#dce3ea]"
+            onClick={() => setIsMobileOpen((prev) => !prev)}
+            className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-md border border-[#dce3ea] text-[#1f2f45] lg:hidden"
+            aria-label={isMobileOpen ? "Close menu" : "Open menu"}
+            aria-expanded={isMobileOpen}
           >
-            ☰
+            {isMobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
       </header>
 
-      {/* Mobile Menu */}
       {isMobileOpen && (
-        <div className="fixed inset-0 z-[60] bg-black/10 backdrop-blur-sm lg:hidden">
-          <div className="absolute right-0 top-0 h-full w-[85%] max-w-[380px] bg-white shadow-xl p-6 flex flex-col space-y-6">
-            {NAV_ITEMS.map((item) => (
+        <div
+          className="fixed inset-0 z-[60] bg-black/30 backdrop-blur-sm lg:hidden"
+          onClick={() => setIsMobileOpen(false)}
+        >
+          <div
+            className="absolute right-0 top-0 flex h-full w-[85%] max-w-sm flex-col bg-white px-6 pb-8 pt-6 shadow-xl"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Mobile navigation"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="mb-6 flex items-center justify-between">
+              <img src={logo} alt="PR Power" className="h-9 w-auto" />
               <button
-                key={item.label}
-                onClick={() => handleNavigation(item.href)}
-                className={cn(
-                  "text-left text-[1.1rem] font-medium transition-colors",
-                  isActive(item.href)
-                    ? "text-[#F26B1D]"
-                    : "text-[#1f2f45] hover:text-[#F26B1D]"
-                )}
+                onClick={() => setIsMobileOpen(false)}
+                className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-md border border-[#dce3ea] text-[#1f2f45]"
+                aria-label="Close menu"
               >
-                {item.label}
+                <X className="h-5 w-5" />
               </button>
-            ))}
+            </div>
+
+            <div className="flex flex-1 flex-col gap-3">
+              {NAV_ITEMS.map((item) => (
+                <button
+                  key={item.label}
+                  onClick={() => handleNavigation(item.href)}
+                  className={cn(
+                    "min-h-[44px] w-full rounded-md px-3 text-left text-base font-medium transition-colors",
+                    isActive(item.href)
+                      ? "bg-[#fff3eb] text-[#F26B1D]"
+                      : "text-[#1f2f45] hover:bg-[#f6f8fb] hover:text-[#F26B1D]"
+                  )}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
 
             <button
               onClick={() => handleNavigation("/#contact")}
-              className="mt-6 w-full rounded-md bg-[#F26B1D] py-3 text-white"
+              className="mt-6 inline-flex min-h-[44px] w-full items-center justify-center rounded-md bg-[#F26B1D] px-6 py-3 text-base font-medium text-white transition-colors hover:bg-[#d85c17]"
             >
               Get a Quote
             </button>
