@@ -1,9 +1,12 @@
-import Navbar from "@/components/Navbar";
+import { lazy, Suspense } from "react";
 import HeroSection from "@/components/HeroSection";
-import ServicesOverview from "@/components/ServicesOverview";
-import AboutPreview from "@/components/AboutPreview";
-import ClientsSection from "@/components/ClientsSection";
-import ContactPreview from "@/components/ContactPreview";
+
+const ServicesOverview = lazy(() => import("@/components/ServicesOverview"));
+const AboutPreview = lazy(() => import("@/components/AboutPreview"));
+const ClientsSection = lazy(() => import("@/components/ClientsSection"));
+const ContactPreview = lazy(() => import("@/components/ContactPreview"));
+
+const sectionFallback = <div className="h-24 w-full" aria-hidden />;
 
 const Index = () => {
   return (
@@ -11,18 +14,29 @@ const Index = () => {
       <section id="home">
         <HeroSection />
       </section>
+
       <section id="about">
-        <AboutPreview />
+        <Suspense fallback={sectionFallback}>
+          <AboutPreview />
+        </Suspense>
       </section>
-       <section id="services">
-        <ServicesOverview />
+
+      <section id="services">
+        <Suspense fallback={sectionFallback}>
+          <ServicesOverview />
+        </Suspense>
       </section>
+
       <section id="clients">
-        <ClientsSection />
+        <Suspense fallback={sectionFallback}>
+          <ClientsSection />
+        </Suspense>
       </section>
-     
+
       <section id="contact">
-        <ContactPreview />
+        <Suspense fallback={sectionFallback}>
+          <ContactPreview />
+        </Suspense>
       </section>
     </div>
   );

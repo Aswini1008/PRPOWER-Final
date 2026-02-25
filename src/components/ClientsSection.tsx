@@ -29,7 +29,7 @@ const ClientsSection = () => {
   ];
 
   return (
-    <section id="clients" className="py-24 bg-gray-50 text-gray-800">
+    <section id="clients-section" className="py-24 bg-gray-50 text-gray-800">
       <div className="container mx-auto px-4 text-center">
         <motion.h2
           initial={{ opacity: 0, y: 30 }}
