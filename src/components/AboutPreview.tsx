@@ -11,7 +11,7 @@ const values = [
   },
   {
     icon: Users,
-    title: "Expert Team",
+    title: "Expert Teama and good ",
     description: "Led by 30+ years of leadership in high-voltage and renewable infrastructure.",
   },
   {
